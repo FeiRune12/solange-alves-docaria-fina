@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Solange Alves Doçaria Fina (Gelatos e Sobremesas)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark-bg:#0f0f0f;
+  --dark-bg-light:#161616;
+  --text:#f5f5f5;
+  --subtext:#c0a880;
+  --dourado:#caa77a;
+  --card-bg: rgba(28,28,28,0.85);
+  --glass-border: rgba(202,167,122,0.2);
+  --accent:#ffd27b;
+  --accent-dark:#e0b56a;
+  --success:#25D366;
+}
+*{box-sizing:border-box}
+body{ margin:0; font-family:"Poppins",sans-serif; color:var(--text); background:var(--dark-bg); min-height:100vh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+body::before{ content:""; position:fixed; inset:0; z-index:-1; opacity:0.12; background-image:linear-gradient(120deg, rgba(255,215,123,0.06) 0%, transparent 20%),linear-gradient(60deg, rgba(255,215,123,0.04) 0%, transparent 30%),linear-gradient(0deg, rgba(0,0,0,0.03) 0%, transparent 20%); filter:blur(6px); }
+
+/* header */
+header{ display:flex; align-items:center; gap:18px; padding:14px 22px; background: linear-gradient(180deg, rgba(18,18,18,0.95), rgba(18,18,18,0.85)); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(202,167,122,0.08); position:sticky; top:0; z-index:100; }
+.logo{ width:56px; height:56px; border-radius:10px; overflow:hidden; box-shadow:0 6px 18px rgba(0,0,0,0.6); border:1px solid rgba(202,167,122,0.12); background: linear-gradient(180deg,#1c1c1c,#2a2a2a); }
+.brand h1{ margin:0; font-family:"Playfair Display",serif; font-size:18px; color:var(--text); letter-spacing:0.2px; }
+.brand .subtitle{ font-size:12px; color:var(--subtext); margin-top:4px; }
+
+/* clock */
+.clock { margin-left:auto; font-size:13px; color:var(--subtext); font-weight:600; margin-right:16px; }
+
+/* header controls */
+.header-controls{ display:flex; gap:10px; align-items:center; }
+.icon-btn{ background:transparent; border:1px solid rgba(202,167,122,0.08); padding:8px 12px; border-radius:10px; cursor:pointer; display:flex; gap:8px; align-items:center; color:var(--dourado); font-weight:600; transition:all .12s; -webkit-user-select:none; user-select:none; }
+.icon-btn:hover{ transform:translateY(-3px); box-shadow:0 10px 28px rgba(0,0,0,0.6); background:rgba(255,215,123,0.03); }
+.user-bubble{ background:linear-gradient(90deg,var(--accent-dark),var(--accent)); color:#111; padding:8px 12px; border-radius:20px; font-weight:700; }
+
+/* container */
+.container{ max-width:1150px; margin:28px auto; padding:0 18px; }
+
+/* buttons */
+.btn-primary{ background: linear-gradient(90deg, var(--dourado), #ffd27b); border:none; color:#121212; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; box-shadow: 0 8px 18px rgba(255,215,123,0.12); transition:transform .14s, box-shadow .14s; }
+.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 12px 30px rgba(255,215,123,0.18); }
+.btn-ghost{ background: transparent; color:var(--text); border:1px solid rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+/* categories title */
+.section-title{ text-align:center; font-family:"Playfair Display",serif; color:var(--accent); font-size:28px; margin:36px 0 18px; }
+
+/* grid */
+.category{ margin-bottom:28px; }
+.produtos{ display:grid; grid-template-columns: repeat(4, 1fr); gap:20px; }
+@media (max-width:1100px){ .produtos{ grid-template-columns: repeat(3,1fr);} }
+@media (max-width:780px){ .produtos{ grid-template-columns: repeat(2,1fr);} }
+@media (max-width:460px){ .produtos{ grid-template-columns: 1fr;} }
+
+/* card */
+.card{ background:var(--dark-bg-light); border-radius:12px; padding:20px 16px 18px; text-align:center; border:1px solid rgba(255,255,255,0.02); box-shadow: 0 10px 40px rgba(0,0,0,0.6); cursor:pointer; transition:transform .18s, box-shadow .18s; display:flex; flex-direction:column; gap:12px; align-items:center; min-height:300px; }
+.card:hover{ transform:translateY(-8px); box-shadow:0 22px 60px rgba(0,0,0,0.7); }
+.vitrine{ width:120px; height:120px; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; border:8px solid rgba(202,167,122,0.18); background:linear-gradient(180deg,#111,#222); }
+.vitrine img{ width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+.card h3{ margin:0; color:var(--accent); font-size:15px; font-weight:700; }
+.card p.desc{ margin:0; color:var(--subtext); font-size:13px; }
+.price{ margin-top:auto; font-weight:800; color:var(--dourado); font-size:16px; }
+
+/* cart */
+.carrinho{ position:fixed; right:22px; top:82px; width:380px; max-height:76vh; overflow:auto; background:var(--dark-bg-light); border-radius:12px; padding:14px; box-shadow:0 30px 80px rgba(0,0,0,0.7); z-index:200; border:1px solid rgba(202,167,122,0.08); transform:translateX(18px); transition:all .25s; opacity:0; pointer-events:none;}
+.carrinho.open{ transform:translateX(0); opacity:1; pointer-events:auto; }
+.carrinho h3{ margin:0 0 8px 0; font-family:"Playfair Display",serif; color:var(--text); }
+.cart-item{ display:flex; gap:8px; align-items:center; justify-content:space-between; padding:8px; border-radius:8px; background:rgba(0,0,0,0.25); margin-bottom:8px; }
+.cart-item small{ display:block; color:var(--subtext); font-size:12px; }
+.cart-total{ font-weight:800; color:var(--text); margin-top:8px; font-size:16px; }
+
+/* fields */
+.field{ margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+.field input, .field textarea{ padding:10px; border-radius:8px; border:1px solid rgba(202,167,122,0.08); background:#121212; color:var(--text); font-size:14px; }
+.field textarea{ resize:vertical; min-height:64px; }
+
+/* modal */
+.modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:400; display:none; }
+.modal{ width:420px; max-width:94%; background:var(--dark-bg-light); border-radius:10px; padding:18px; border:1px solid rgba(202,167,122,0.06); box-shadow:0 30px 90px rgba(0,0,0,0.8); color:var(--text); }
+.modal h3{ margin:0 0 10px 0; font-family:"Playfair Display",serif; color:var(--accent); }
+.modal .confirm-row{ display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+
+/* rating */
+.stars{ display:flex; gap:6px; justify-content:center; margin-top:8px; font-size:22px; cursor:pointer; color:var(--subtext); }
+
+/* popup */
+.popup{ position:fixed; left:50%; top:18%; transform:translateX(-50%); background:var(--dark-bg-light); padding:14px 18px; border-radius:10px; box-shadow:0 30px 90px rgba(0,0,0,0.8); border:1px solid rgba(202,167,122,0.06); z-index:500; display:none; max-width:90%; }
+
+/* toast */
+.toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:22px; background:var(--dourado); color:#111; padding:10px 14px; border-radius:10px; box-shadow:0 20px 60px rgba(0,0,0,0.6); z-index:600; display:none; }
+
+/* custom checkbox */
+.checkbox-custom{ display:flex; align-items:center; gap:8px; cursor:pointer; -webkit-user-select:none; user-select:none; }
+.checkbox-custom input[type="checkbox"]{-webkit-appearance:none;appearance:none; width:18px; height:18px; border-radius:5px; border:1px solid rgba(255,255,255,0.06); background:#121212; display:inline-block; position:relative; cursor:pointer; }
+.checkbox-custom input[type="checkbox"]:checked{ background:linear-gradient(90deg,var(--dourado),var(--accent)); border:none; }
+.checkbox-custom input[type="checkbox"]:checked::after{ content:""; position:absolute; left:5px; top:8px; width:6px; height:10px; border:2px solid #111; border-top:0; border-left:0; transform:rotate(40deg); }
+
+/* product modal image */
+.product-image{ width:120px; height:120px; border-radius:10px; overflow:hidden; margin:0 auto 8px; }
+.product-image img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+@media (max-width:780px){ header{padding:10px} .logo{width:48px;height:48px} }
+
+/* ====== Correções de seletores ausentes ====== */
+.product-card {
+  background: #ffffff10;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-logout {
+  background: #ff4b4b;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-logout:hover {
+  background: #d63636;
+}
+
+.checkout-btn {
+  background: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.checkout-btn:hover {
+  background: #27ae60;
+}
+
+/* Corrige o 'kv' (provavelmente um pequeno elemento de texto, span ou div) */
+.kv {
+  font-size: 14px;
+  color: #666;
+  display: inline-block;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><img src="imagens/logo.jpg" alt="logo" style="width:100%;height:100%;object-fit:cover;"></div>
+  <div class="brand" style="line-height:1;">
+    <h1>Solange Alves Doçaria Fina</h1>
+    <div class="subtitle">Terça–Sábado 13h–21h • Domingo 13h–16h</div>
+  </div>
+
+  <div class="clock" id="clock">--/--/---- — --:--</div>
+
+  <div class="header-controls" aria-hidden="false">
+    <button class="icon-btn" id="cashbackBtn" title="Cashback" onclick="openCashback()" disabled>
+      Cashback <span id="cashbackAmount" style="margin-left:8px;color:var(--accent)">R$ 0,00</span>
+    </button>
+
+    <button class="icon-btn" id="btnAvaliar" onclick="openRating()">Avaliar</button>
+    <button class="icon-btn" id="toggleCartBtn" onclick="toggleCart()">Carrinho <span id="cartCount" style="margin-left:8px">0</span></button>
+
+    <div id="userArea" style="display:flex;gap:8px;align-items:center;">
+      <button class="icon-btn" id="btnLogin" onclick="openLogin()">Entrar</button>
+      <button class="btn-logout" id="btnLogout" style="display:none;" onclick="doLogout()">Sair</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <!-- Bolos e Sobremesas -->
+  <section class="category" id="cat-bolos">
+    <div class="section-title">Bolos e Sobremesas</div>
+    <div class="produtos" id="prod-bolos">
+      <div class="card product-card" data-name="Bolo Caseirinho Ninho e Morango" data-price="40.98" data-img="imagens/bolo.jpg" data-desc="Sabor intenso e cremoso">
+        <div class="vitrine"><img src="imagens/bolo.jpg" alt=""></div>
+        <h3>Bolo Caseirinho Ninho e Morango</h3>
+        <p class="desc">Sabor intenso e cremoso</p>
+        <div class="price">R$ 40,98</div>
+      </div>
+
+      <div class="card product-card" data-name="Tartier de Morango" data-price="38.50" data-img="imagens/placeholder.jpg" data-desc="Camadas de creme e morangos">
+        <div class="vitrine"><img src="imagens/tartier_morango.jpg" alt=""></div>
+        <h3>Tartier de Morango</h3>
+        <p class="desc">Camadas de creme e morangos</p>
+        <div class="price">R$ 38,50</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gelatos -->
+  <section class="category" id="cat-gelatos">
+    <div class="section-title">Gelatos</div>
+    <div class="produtos" id="prod-gelatos">
+      <div class="card product-card" data-name="Gelato Van Bella" data-price="35.08" data-img="imagens/gelato.jpg" data-desc="Baunilha e chocolate belga">
+        <div class="vitrine"><img src="imagens/gelato.jpg" alt=""></div>
+        <h3>Gelato Van Bella</h3>
+        <p class="desc">Baunilha e chocolate belga</p>
+        <div class="price">R$ 35,08</div>
+      </div>
+
+      <div class="card product-card" data-name="Gelato Tartier de Morango" data-price="15.00" data-img="imagens/gelato2.jpg" data-desc="Sabor natural de morango">
+        <div class="vitrine"><img src="imagens/gelato2.jpg" alt=""></div>
+        <h3>Gelato Tartier de Morango</h3>
+        <p class="desc">Releitura da famosa Tartier de Morango em um Gelato</p>
+        <div class="price">R$ 15,00</div>
+      </div>
+
+      <div class="card product-card" data-name="Gelato Pistache" data-price="28.00" data-img="imagens/gelato.jpg" data-desc="Sabor especial da casa">
+        <div class="vitrine"><img src="imagens/gelato.jpg" alt=""></div>
+        <h3>Gelato Pistache</h3>
+        <p class="desc">Sabor especial da casa</p>
+        <div class="price">R$ 28,00</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brownies -->
+  <section class="category" id="cat-brownies">
+    <div class="section-title">Brownies</div>
+    <div class="produtos" id="prod-brownies">
+      <div class="card product-card" data-name="Brownie Delicia" data-price="39.98" data-img="imagens/brownie_delicia.jpg" data-desc="Com gelato e morango">
+        <div class="vitrine"><img src="imagens/brownie_delicia.jpg" alt=""></div>
+        <h3>Brownie Delicia</h3>
+        <p class="desc">Com gelato e morango</p>
+        <div class="price">R$ 39,98</div>
+      </div>
+
+      <div class="card product-card" data-name="Brownie Gran Gateau" data-price="42.00" data-img="imagens/lasanha_brownie.jpg" data-desc="Lasanha de brownie com ganache">
+        <div class="vitrine"><img src="imagens/lasanha_brownie.jpg" alt=""></div>
+        <h3>Brownie Gran Gateau</h3>
+        <p class="desc">Lasanha de brownie com ganache</p>
+        <div class="price">R$ 42,00</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Copos Splendores -->
+  <section class="category" id="cat-copos">
+    <div class="section-title">Copos Splendores</div>
+    <div class="produtos" id="prod-copos">
+      <div class="card product-card" data-name="Copo Gran Splendor" data-price="20.90" data-img="imagens/gran_splendor.jpg" data-desc="Brownie, creme e morangos">
+        <div class="vitrine"><img src="imagens/gran_splendor.jpg" alt=""></div>
+        <h3>Copo Gran Splendor</h3>
+        <p class="desc">Brownie, creme e morangos</p>
+        <div class="price">R$ 20,90</div>
+      </div>
+
+      <div class="card product-card" data-name="Copo Gran Dubai" data-price="27.00" data-img="imagens/gran_dubai.jpg" data-desc="Pistache e crocância">
+        <div class="vitrine"><img src="imagens/gran_dubai.jpg" alt=""></div>
+        <h3>Copo Gran Dubai</h3>
+        <p class="desc">Pistache e crocância</p>
+        <div class="price">R$ 27,00</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Salgados -->
+  <section class="category" id="cat-salgados">
+    <div class="section-title">Salgados</div>
+    <div class="produtos" id="prod-salgados">
+      <div class="card product-card" data-name="Coxinha de Costela" data-price="18.00" data-img="imagens/coxinha_costela.jpg" data-desc="Coxinha de costela suculenta">
+        <div class="vitrine"><img src="imagens/coxinha_costela.jpg" alt=""></div>
+        <h3>Coxinha de Costela</h3>
+        <p class="desc">Coxinha de costela suculenta</p>
+        <div class="price">R$ 18,00</div>
+      </div>
+
+      <div class="card product-card" data-name="Coxinha de Frango" data-price="17.00" data-img="imagens/coxinha_frango.jpg" data-desc="Coxinha de frango tradicional">
+        <div class="vitrine"><img src="imagens/coxinha_frango.jpg" alt=""></div>
+        <h3>Coxinha de Frango</h3>
+        <p class="desc">Coxinha de frango tradicional</p>
+        <div class="price">R$ 17,00</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Carrinho lateral -->
+<aside class="carrinho" id="cartPanel" aria-hidden="true">
+  <h3>Seu Carrinho</h3>
+  <div id="cartItems"></div>
+  <div class="cart-total" id="cartTotal">Total: R$ 0,00</div>
+
+  <div class="field">
+    <input type="text" id="cartCustomerName" placeholder="Seu nome" disabled>
+  </div>
+  <div class="field">
+    <textarea id="cartCustomerNotes" placeholder="Observações (ex.: sem lactose, entregar às 18h)"></textarea>
+  </div>
+
+  <div class="field" style="display:flex;align-items:center;justify-content:space-between;">
+    <label class="checkbox-custom"><input type="checkbox" id="cartUseCashbackInput"> Usar Cashback</label>
+    <button class="btn-primary" id="applyCashbackBtn" onclick="applyCashback()" disabled>Checar/Usar</button>
+  </div>
+
+  <div style="margin-top:10px;">
+    <button class="checkout-btn btn-primary" style="width:100%;" onclick="finalizeOrder()">Finalizar Pedido</button>
+  </div>
+</aside>
+
+<!-- Product Modal -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 id="productModalTitle">Produto</h3>
+    <div class="product-image"><img id="productModalImg" src="" alt=""></div>
+    <p id="productModalDesc" class="kv"></p>
+    <p style="font-weight:800;color:var(--dourado);" id="productModalPrice">R$ 0,00</p>
+
+    <div class="field">
+      <label>Quantidade</label>
+      <input type="number" id="productQty" min="1" value="1">
+    </div>
+
+    <div class="confirm-row">
+      <button class="btn-primary" onclick="addCurrentToCart()">Adicionar ao carrinho</button>
+      <button class="btn-ghost" onclick="closeProductModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Login / Create Account Modal -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 id="loginTitle">Entrar</h3>
+
+    <div id="loginForm">
+      <div class="field">
+        <input type="text" id="loginName" placeholder="Nome">
+      </div>
+      <div class="field">
+        <input type="password" id="loginPass" placeholder="Senha">
+      </div>
+      <label class="checkbox-custom" style="margin-top:8px;"><input type="checkbox" id="loginStay"> Permanecer logado</label>
+      <div class="confirm-row">
+        <button class="btn-primary" onclick="doLogin()">Entrar</button>
+        <button class="btn-ghost" onclick="openCreateAccount()">Criar conta</button>
+      </div>
+    </div>
+
+    <div id="createForm" style="display:none;">
+      <div class="field"><input type="text" id="createName" placeholder="Nome"></div>
+      <div class="field"><input type="password" id="createPass" placeholder="Senha"></div>
+      <div class="confirm-row">
+        <button class="btn-primary" onclick="doCreate()">Criar</button>
+        <button class="btn-ghost" onclick="openLogin()">Voltar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Rating Modal -->
+<div class="modal-overlay" id="ratingModal">
+  <div class="modal">
+    <h3>Avalie-nos</h3>
+    <div class="stars" id="ratingStars">
+      <span data-value="1">&#9734;</span>
+      <span data-value="2">&#9734;</span>
+      <span data-value="3">&#9734;</span>
+      <span data-value="4">&#9734;</span>
+      <span data-value="5">&#9734;</span>
+    </div>
+    <div class="field"><input type="text" id="ratingName" placeholder="Seu nome"></div>
+    <div class="field"><textarea id="ratingComment" placeholder="Comentário"></textarea></div>
+    <div class="confirm-row">
+      <button class="btn-primary" onclick="submitRating()">Enviar</button>
+      <button class="btn-ghost" onclick="closeRating()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup and Toast -->
+<div class="popup" id="popup"></div>
+<div class="toast" id="toast">Mensagem</div>
+
+<script>
+/* ====== State & constants ====== */
+let cart = [];
+let currentProduct = null;
+const WHATSAPP_NUMBER = "5511993945539";
+const CASHBACK_REWARD = 10;
+const CASHBACK_THRESHOLD = 100; // R$ >= 100 earns reward
+let currentUser = null; // {name,pass,cashback}
+
+/* ====== UI helpers: toast & popup (no alerts) ====== */
+function showToast(msg, ms=2000){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(()=> t.style.display='none', ms);
+}
+function showPopup(msg, buttons=[{text:'OK', primary:true, cb:()=>{}}]){
+  const el = document.getElementById('popup');
+  el.innerHTML = '';
+  const p = document.createElement('div'); p.style.marginBottom='10px'; p.innerHTML = msg.replace(/\n/g,'<br>');
+  el.appendChild(p);
+  const row = document.createElement('div'); row.style.display='flex'; row.style.justifyContent='flex-end'; row.style.gap='8px';
+  buttons.forEach(b=>{
+    const btn = document.createElement('button');
+    btn.className = b.primary? 'btn-primary' : 'btn-ghost';
+    btn.textContent = b.text;
+    btn.onclick = ()=>{ try{ b.cb && b.cb(); } finally { closePopup(); } };
+    row.appendChild(btn);
+  });
+  el.appendChild(row);
+  el.style.display = 'block';
+}
+function closePopup(){ document.getElementById('popup').style.display='none'; }
+
+/* ====== Clock ====== */
+function atualizarRelogio(){
+  const clockEl = document.getElementById('clock');
+  const now = new Date();
+  const dia = String(now.getDate()).padStart(2,'0');
+  const mes = String(now.getMonth()+1).padStart(2,'0');
+  const ano = now.getFullYear();
+  const horas = String(now.getHours()).padStart(2,'0');
+  const minutos = String(now.getMinutes()).padStart(2,'0');
+  clockEl.textContent = `${dia}/${mes}/${ano} — ${horas}:${minutos}`;
+}
+setInterval(atualizarRelogio,1000);
+atualizarRelogio();
+
+/* ====== Cart functions ====== */
+function renderCart(){
+  const container = document.getElementById('cartItems');
+  container.innerHTML = '';
+  let total = 0;
+  cart.forEach((it, idx) => {
+    total += it.price * it.qty;
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `<div style="display:flex;gap:10px;align-items:center;min-width:0">
+        <div style="width:44px;height:44px;border-radius:8px;overflow:hidden;background:#111">
+          <img src="${it.img}" style="width:100%;height:100%;object-fit:cover" alt="">
+        </div>
+        <div style="min-width:0">
+          <strong style="display:block">${it.name}</strong>
+          <small>R$ ${it.price.toFixed(2)} x ${it.qty}</small>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+        <div><button class="btn-ghost" onclick="changeQty(${idx},1)">+</button> <button class="btn-ghost" onclick="changeQty(${idx},-1)">-</button></div>
+        <button class="btn-ghost" style="color:#f66" onclick="removeFromCart(${idx})">Remover</button>
+      </div>`;
+    container.appendChild(div);
+  });
+  document.getElementById('cartTotal').textContent = `Total: R$ ${total.toFixed(2)}`;
+  document.getElementById('cartCount').textContent = cart.length;
+  updateCashbackUI();
+}
+function changeQty(i, delta){
+  cart[i].qty = Math.max(1, (cart[i].qty||1) + delta);
+  renderCart();
+}
+function addToCartByData(data){
+  const item = { name: data.name, price: Number(data.price), img: data.img, qty: 1 };
+  cart.push(item);
+  renderCart();
+  showToast('Item adicionado!');
+}
+function addCurrentToCart(){
+  if(!currentProduct) return;
+  const qty = parseInt(document.getElementById('productQty').value) || 1;
+  const it = { name: currentProduct.name, price: currentProduct.price, img: currentProduct.img, qty };
+  cart.push(it);
+  closeProductModal();
+  renderCart();
+  showToast('Item adicionado!');
+}
+function removeFromCart(i){ cart.splice(i,1); renderCart(); }
+function toggleCart(){ const el = document.getElementById('cartPanel'); el.classList.toggle('open'); el.setAttribute('aria-hidden', !el.classList.contains('open')); }
+
+/* ====== Product modal (delegation) ====== */
+document.addEventListener('click', (e)=>{
+  const card = e.target.closest('.product-card');
+  if(card){
+    openProductModalFromCard(card);
+  }
+});
+function openProductModalFromCard(card){
+  const name = card.dataset.name;
+  const price = Number(card.dataset.price);
+  const img = card.dataset.img;
+  const desc = card.dataset.desc || '';
+  currentProduct = { name, price, img, desc };
+  document.getElementById('productModalTitle').textContent = name;
+  document.getElementById('productModalImg').src = img;
+  document.getElementById('productModalDesc').textContent = desc;
+  document.getElementById('productModalPrice').textContent = `R$ ${price.toFixed(2)}`;
+  document.getElementById('productQty').value = 1;
+  document.getElementById('productModal').style.display = 'flex';
+}
+function closeProductModal(){ document.getElementById('productModal').style.display = 'none'; currentProduct = null; }
+
+/* Close modals when clicking outside */
+document.addEventListener('click', (e)=>{
+  ['productModal','loginModal','ratingModal'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.style.display === 'flex' && e.target === el) el.style.display = 'none';
+  });
+});
+
+/* ====== Login / account (localStorage simple) ====== */
+function openLogin(){ document.getElementById('loginModal').style.display = 'flex'; openLoginView(); }
+function openLoginView(){ document.getElementById('loginForm').style.display='block'; document.getElementById('createForm').style.display='none'; document.getElementById('loginTitle').textContent='Entrar'; }
+function openCreateAccount(){ document.getElementById('loginModal').style.display='flex'; document.getElementById('loginForm').style.display='none'; document.getElementById('createForm').style.display='block'; document.getElementById('loginTitle').textContent='Criar Conta'; }
+function closeLoginModal(){ document.getElementById('loginModal').style.display = 'none'; }
+
+function doCreate(){
+  const name = document.getElementById('createName').value.trim();
+  const pass = document.getElementById('createPass').value;
+  if(!name || !pass){ showPopup('Preencha nome e senha'); return; }
+  const key = `saf_user_${name}`;
+  if(localStorage.getItem(key)){ showPopup('Usuário já existe'); return; }
+  const data = { name, pass, cashback: 0 };
+  localStorage.setItem(key, JSON.stringify(data));
+  showToast('Conta criada');
+  loginAs(name, pass, document.getElementById('loginStay').checked);
+  closeLoginModal();
+}
+function doLogin(){
+  const name = document.getElementById('loginName').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if(!name || !pass){ showPopup('Preencha nome e senha'); return; }
+  loginAs(name, pass, document.getElementById('loginStay').checked);
+}
+function loginAs(name, pass, stay){
+  const key = `saf_user_${name}`;
+  const raw = localStorage.getItem(key);
+  if(!raw){ showPopup('Usuário não encontrado'); return; }
+  const data = JSON.parse(raw);
+  if(data.pass !== pass){ showPopup('Senha incorreta'); return; }
+  currentUser = data;
+  localStorage.setItem('saf_current', name);
+  if(stay) localStorage.setItem('saf_stay', 'true'); else localStorage.removeItem('saf_stay');
+  updateUserUI();
+  showToast(`Bem-vindo(a), ${currentUser.name}!`);
+  closeLoginModal();
+}
+function doLogout(){
+  currentUser = null;
+  localStorage.removeItem('saf_current');
+  localStorage.removeItem('saf_stay');
+  updateUserUI();
+  showToast('Você saiu');
+}
+function initUserFromStorage(){
+  const name = localStorage.getItem('saf_current');
+  if(name){
+    const raw = localStorage.getItem(`saf_user_${name}`);
+    if(raw) currentUser = JSON.parse(raw);
+  }
+  updateUserUI();
+}
+function updateUserUI(){
+  const btnLogin = document.getElementById('btnLogin');
+  const btnLogout = document.getElementById('btnLogout');
+  const cashbackBtn = document.getElementById('cashbackBtn');
+  const cartName = document.getElementById('cartCustomerName');
+  const applyCashbackBtn = document.getElementById('applyCashbackBtn');
+
+  if(currentUser){
+    btnLogin.textContent = currentUser.name;
+    btnLogin.classList.add('user-bubble');
+    btnLogout.style.display = 'inline-block';
+    cashbackBtn.disabled = false;
+    applyCashbackBtn.disabled = false;
+    document.getElementById('cashbackAmount').textContent = `R$ ${Number(currentUser.cashback||0).toFixed(2)}`;
+    cartName.value = currentUser.name;
+    cartName.disabled = true;
+  } else {
+    btnLogin.textContent = 'Entrar';
+    btnLogin.classList.remove('user-bubble');
+    btnLogout.style.display = 'none';
+    cashbackBtn.disabled = true;
+    applyCashbackBtn.disabled = true;
+    document.getElementById('cashbackAmount').textContent = `R$ 0,00`;
+    cartName.value = '';
+    cartName.disabled = false;
+  }
+  updateCashbackUI();
+}
+
+/* ====== Cashback logic ====== */
+function openCashback(){
+  if(!currentUser){ showPopup('Você precisa estar logado para ver o cashback.', [{text:'Entrar', primary:true, cb: openLogin}, {text:'Fechar'}]); return; }
+  showPopup(`Seu cashback disponível: R$ ${Number(currentUser.cashback || 0).toFixed(2)}`, [{text:'Fechar'}]);
+}
+function updateCashbackUI(){
+  const applyBtn = document.getElementById('applyCashbackBtn');
+  const useBox = document.getElementById('cartUseCashbackInput');
+  if(currentUser && Number(currentUser.cashback || 0) > 0){
+    applyBtn.disabled = false;
+    useBox.disabled = false;
+  } else {
+    applyBtn.disabled = true;
+    useBox.disabled = true;
+    useBox.checked = false;
+  }
+}
+function applyCashback(){
+  if(!currentUser){ showPopup('Faça login para usar cashback.', [{text:'Entrar', primary:true, cb: openLogin}, {text:'Fechar'}]); return; }
+  const available = Number(currentUser.cashback || 0);
+  if(available <= 0){ showPopup('Você não tem cashback disponível.'); return; }
+  showPopup(`Você tem R$ ${available.toFixed(2)} de cashback disponível. Para usar, marque "Usar Cashback" no carrinho.`, [{text:'Fechar'}]);
+}
+
+/* ====== Finalize / WhatsApp (mold solicitado) ====== */
+function finalizeOrder(){
+  if(cart.length === 0){ showToast('Seu carrinho está vazio!'); return; }
+  const cartNameInput = document.getElementById('cartCustomerName');
+  const name = (cartNameInput.value || (currentUser?currentUser.name:'')).trim();
+  if(!name){ showPopup('Informe seu nome no campo do carrinho.'); return; }
+
+  const notes = document.getElementById('cartCustomerNotes').value.trim();
+  const useCashback = document.getElementById('cartUseCashbackInput').checked && currentUser && Number(currentUser.cashback || 0) > 0;
+
+  let subtotal = 0;
+  let itemsText = '';
+  cart.forEach((it, idx)=>{
+    itemsText += `${idx+1}) ${it.name} x ${it.qty} - R$ ${(it.price*it.qty).toFixed(2)}%0A`;
+    subtotal += it.price*it.qty;
+  });
+
+  let finalTotal = subtotal;
+  let appliedCashback = 0;
+  if(useCashback && currentUser){
+    appliedCashback = Math.min(Number(currentUser.cashback||0), finalTotal);
+    finalTotal = Math.max(0, finalTotal - appliedCashback);
+  }
+
+  // message mold requested
+  let mensagem = `|| Pedido ||%0A%0ACliente: ${encodeURIComponent(name)}%0A%0A------%0A%0AItens:%0A${itemsText}%0ATotal: R$ ${finalTotal.toFixed(2)}%0A%0A|| Pedido ||`;
+  if(notes) mensagem += `%0A%0AObservações: ${encodeURIComponent(notes)}`;
+  if(appliedCashback > 0) mensagem += `%0A%0ACashback aplicado: R$ ${appliedCashback.toFixed(2)}`;
+
+  // open whatsapp
+  const link = `https://wa.me/${WHATSAPP_NUMBER}?text=${mensagem}`;
+  window.open(link, '_blank');
+
+  // reward cashback if subtotal >= threshold
+  if(subtotal >= CASHBACK_THRESHOLD && currentUser){
+    currentUser.cashback = (Number(currentUser.cashback || 0) + CASHBACK_REWARD);
+    localStorage.setItem(`saf_user_${currentUser.name}`, JSON.stringify(currentUser));
+    document.getElementById('cashbackAmount').textContent = `R$ ${Number(currentUser.cashback).toFixed(2)}`;
+    showToast(`Você ganhou R$ ${CASHBACK_REWARD.toFixed(2)} de cashback para próximas compras!`);
+  }
+
+  // if used cashback, deduct applied amount
+  if(appliedCashback > 0 && currentUser){
+    currentUser.cashback = Math.max(0, Number(currentUser.cashback || 0) - appliedCashback);
+    localStorage.setItem(`saf_user_${currentUser.name}`, JSON.stringify(currentUser));
+    document.getElementById('cashbackAmount').textContent = `R$ ${Number(currentUser.cashback).toFixed(2)}`;
+  }
+
+  // clear cart & fields
+  cart = [];
+  renderCart();
+  document.getElementById('cartCustomerNotes').value = '';
+  document.getElementById('cartUseCashbackInput').checked = false;
+  showToast('Pedido pronto para envio no WhatsApp!');
+}
+
+/* ====== Rating modal ====== */
+let ratingCurrent = 0;
+function openRating(){ document.getElementById('ratingModal').style.display='flex'; ratingCurrent=0; highlightStars(0); }
+function closeRating(){ document.getElementById('ratingModal').style.display='none'; }
+const starEls = Array.from(document.querySelectorAll('#ratingStars span'));
+starEls.forEach(s=>{
+  s.addEventListener('mouseover', ()=> highlightStars(Number(s.dataset.value)));
+  s.addEventListener('click', ()=> { ratingCurrent = Number(s.dataset.value); highlightStars(ratingCurrent); });
+});
+function highlightStars(r){
+  starEls.forEach(s => s.style.color = (Number(s.dataset.value) <= r) ? 'var(--accent)' : 'var(--subtext)');
+  starEls.forEach(s => s.innerHTML = (Number(s.dataset.value) <= r) ? '\u2605' : '\u2606');
+}
+function submitRating(){
+  const name = document.getElementById('ratingName').value.trim() || 'Anônimo';
+  const comment = document.getElementById('ratingComment').value.trim();
+  showPopup(`Obrigado pela avaliação!\nNota: ${ratingCurrent}\nNome: ${name}\nComentário: ${comment}`, [{text:'Fechar'}]);
+  closeRating();
+}
+
+/* ====== Init ====== */
+function init(){
+  // load user if present
+  initUserFromStorage();
+  renderCart();
+  // ensure product placeholder exists if missing (do nothing here)
+}
+init();
+
+/* small helper for clicking outside modals handled earlier */
+</script>
+</body>
+</html>
